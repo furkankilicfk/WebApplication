@@ -1,0 +1,26 @@
+﻿@*@model List<WebApplication1.Models.City>           //Gelecek olan datanın hangi türde olduğunu bildiriyoruz.
+
+@*@*@*@Model *@                                            @*@*Gelecek olan datayı bu şekilde kullanıyoruz. küçük modeldan türünü aldı. *@
+
+@*<ul>*@
+    @*@foreach (var city in Model)
+    {
+        <li>@city.CityName</li>
+    }
+</ul>*@
+
+
+@*<ul>
+    @foreach (var city  in ViewBag.data as List<WebApplication1.Models.City>)                     //Dynamic değişkenin türü runtime'da belli olacağı için ilgili türü, dönüşümü sağlamamız gerekiyor -- as
+    {                                                                                             //Dynamic old. dönüşümü belirttiğimden citynin altındaki verilere rahatlıkla ulaşabiliyorum
+        <li>@city.CityName</li>
+    }
+</ul>*@
+
+
+<ul>
+    @foreach (var city  in ViewData["data"] as List<WebApplication1.Models.City>)                  //unboxing ettik     
+    {                           
+        <li>@city.CityName</li>
+    }
+</ul>
