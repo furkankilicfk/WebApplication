@@ -1,6 +1,6 @@
 ﻿@*@model List<WebApplication1.Models.City>           //Gelecek olan datanın hangi türde olduğunu bildiriyoruz.
 
-@*@*@*@Model *@                                            @*@*Gelecek olan datayı bu şekilde kullanıyoruz. küçük modeldan türünü aldı. *@
+@*@@*@Model *@                                            @*@*Gelecek olan datayı bu şekilde kullanıyoruz. küçük modeldan türünü aldı. *@
 
 @*<ul>*@
     @*@foreach (var city in Model)
@@ -18,9 +18,22 @@
 </ul>*@
 
 
-<ul>
+@*<ul>
     @foreach (var city  in ViewData["data"] as List<WebApplication1.Models.City>)                  //unboxing ettik     
     {                           
         <li>@city.CityName</li>
     }
-</ul>
+</ul>*@
+
+@*<ul>
+    @foreach (var city  in TempData["data"] as List<WebApplication1.Models.City>)                  //unboxing ettik     
+    {                           
+        <li>@city.CityName</li>
+    }
+</ul>*@
+
+@model (WebApplication1.Models.Product p, WebApplication1.Models.City c)        //Gelen nesnenin türüne uygun bir şekilde tanımlama yapmalıyız.
+
+<h3>@Model.p.ProductName</h3>
+
+<h3>@Model.c.CityName</h3>
