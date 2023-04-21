@@ -1,0 +1,29 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model WebApplication1.Models.Product
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+@*<a href="~/lib/jquery/jquery.min.map">~/lib/jquery/jquery.min.map</a>*@
+<script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<form asp-action="CreateTwoProduct" asp-controller="Product" method="post">
+    <input type="text" asp-for="ProductName" placeholder="ProductName"  />
+    <span asp-validation-for="ProductName"></span>
+    <input type="number" asp-for="Quantity" placeholder="Quantity"  />
+    <span asp-validation-for="Quantity"></span>
+    <input type="email" asp-for="Email" placeholder="Email"  />             @*Email mesajını alacak, email isimli asp-val-for un alanına yerleştirecek*@
+    <span asp-validation-for="Email"></span>
+    <button>Gönder</button>
+</form>
+
+@*Validation mesajları burada span içinde vermek daha kolay ve verimli. 
+
+asp-validation-for üzerinden bind ettiğimiz property'nin validation'ı doğrulanmadığı takdirde varsa mesajını gelecek buradaki span'a yazacaktır.'  *@
+@*hepsini div içinde de belirtebilirim*@
+
+@*Client tabanlı validation inspect üzerinden rahatlıkla aşılabilir fakat server tabanlıyı da eklediğimizde sonucunda yine server sayesinde error verir *@
+
+@*RegisterValidatorsFromAssemblyContaining<> : Burada vereceğim sınıfın bulunduğu assembly neyse o assembly içerisindeki bütün validatorları bulacak ve sisteme otomatik entegre edecektir*@
+@*Bütün validator sınıflarını bul ve gerekli validationları uygula*@
+
+@*FluentValidation'da yapmamız gereken ilk hamle FluentValidation servisini uygulamamıza entegre etmek.(Startup'tan ConfigureServices içerisinden)*@

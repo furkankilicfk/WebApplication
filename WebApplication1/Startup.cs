@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +25,8 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)          //Bu uygulamada kullanýlacak servislerin eklendiði/konfigüre edildi metottur.
                                                                             //Servisler: belirli iþlere odaklanmýþ ve o iþin sorumluluðunu üstlenmiþ kütüphaneler/sýnýflar vs.
         {
+            services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
+            //Validationlar nerede tutulursa tutulsun sisteme bildirilmesi gerekiyor. Bildirmeyi Tektek yapabiliriz ancak biz sistemin bulmasýný istiyoruz.(Çok fazla validatorumuz olacak.)
             services.AddMvc();          //Asp.Net Core uygulamasýnda MVC mimarisini kullanabilmek için uygulamada Controller ve View yapýlanmalarýnýn eklenmesi gerekmektedir.
                                         //Bunun için öncelikle bu servis uygulamaya ekleniyor. Böylece uygulama MVC davranýþý sergileyebilecektir.
             services.AddRazorPages();

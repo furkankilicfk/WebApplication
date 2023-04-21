@@ -1,0 +1,34 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@*Nereye post yapacağımı bildirdim*@
+
+@*<form asp-action="CreateProduct" asp-controller="Product" method="post">    @*Hedef action'ı ve ilgili türde isteği belirttim'*@ @*productcontr da post türündeki CreateProduct tetiklenecek*@
+ @*   <input type="text"  name="txtProductName" placeholder="ProductName" />
+    <br/>
+    <input type="number" name="txtQuantity" placeholder="Quantity" />
+    <button>Ürün Ekle</button>           @*bir formu tetikleyebilmek için button gereklidir*@
+@*</form>*@
+
+@*Bir web uygulamasında form tetiklendiğinde içerisindeki inputların değerleri hedef endpointe gönderilir(post)*@ 
+@*Gelen Request neticesinde veriler action'a gelmiş olacak ve veriler parametre ile yakalanacak*@ @*formdaki nameler sayesinde*@
+
+@*
+<form asp-action="CreateProduct" asp-controller="Product" method="post">    
+  @*  <input type="text"  name="ProductName" placeholder="ProductName" />
+    <br/>
+    <input type="number" name="Quantity" placeholder="Quantity" />
+    <button>Ürün Ekle</button>          
+@*</form>*@
+
+@*Model belirterek ve asp-for vererek bağlantıyı kurmak çok daha kolay ve güvenilir*@
+
+@model WebApplication1.Models.Product 
+
+<form asp-action="CreateProduct" asp-controller="Product" method="post">        
+    <input type="text"  asp-for="ProductName" placeholder="ProductName" />
+    <br/>
+    <input type="number" asp-for="Quantity" placeholder="Quantity" />
+    <button>Ürün Ekle</button>          
+</form>
+
+@*!!!!!!!!!!!!Bu name değerlerini propertylerinde karşılayan farklı bir türde nesne ile de karşılama yapabiliyorsun!!!!!!!!!*@
+

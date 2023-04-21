@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using WebApplication1.Models;
 
 namespace WebApplication1.Contoller
@@ -57,18 +59,18 @@ namespace WebApplication1.Contoller
         //    return result;
         //}
 
-        public ActionResult GetProducts()           //İstediğin türü döndürebildiğin yapıdır. Genellikle (aşağıdaki gibi) 
-        {
-            if (true)
-            {
-                return Json(new object());          //şart durumunu kontrol edersin
-            }
-            else if (false)
-            {
-                return Content("abcde");            //Farklı değerlerin döndürebilmek için ortaj tür sağlayan result türüdür
-            }
-            return View();                          //IAction interfacidir
-        }
+        //public IActionResult GetProducts()           //İstediğin türü döndürebildiğin yapıdır. Genellikle (aşağıdaki gibi) 
+        //{
+        //    if (true)
+        //    {
+        //        return Json(new object());          //şart durumunu kontrol edersin
+        //    }
+        //    else if (false)
+        //    {
+        //        return Content("abcde");            //Farklı değerlerin döndürebilmek için ortaj tür sağlayan result türüdür
+        //    }
+        //    return View();                          //IAction interfacidir
+        //}
 
 
         //Controller içerisindeki actionlar gerekli noktaları tetikler ama iş yapmaz. actionlar iş yapmak için değil iş yapanları çağırmak için vardır.
@@ -76,5 +78,90 @@ namespace WebApplication1.Contoller
         //sadece iş mantığğı yürüten bir şey illa yazmak istiyorsan gelen requestleri engellemelisin [NonAction] -- iş mantığı, alogitma batındırır.
         //Sistemdeki tüm Controllerlar dışarıdan istek alabilmektedirler. Hem controller tanımlayıp hem de dışarıdan istek almasını istemiyorsak [NonController]. Sıradan bir sınıf olacak.
 
+        //*************************MODEL BINDING***********************
+        public IActionResult CreateProduct()    //varsayılan get talebi de ilgili view'in açılması talebidir
+        {
+            var p = new Product();
+            //{
+            //    ProductName = "Test",
+            //    Quantity = 1,
+            //};
+            return View(p);
+        }
+
+
+        //[HttpPost]
+        //public IActionResult CreateProduct(string txtProductName, string txtQuantity)    //istediğin gibi yakalayabilirsin buradaki dönüşümleri mimari kendi hallediyor
+        //{
+        //    return View();
+        //}
+
+        //Çok fazla veri geldiğinde kullanıcıdan gelecek olan verileri birebir karşılayabilecek bir modele ihtiyacım olur. Product sınıfı gibi. id'yisildik
+
+        [HttpPost]
+        public IActionResult CreateProduct(Product p)    //Gelecek olan verileri Product türünden bir nesne ile karşılar
+        {                                                //Form'daki name'ler property isimleriyle değiştirilmelidir.
+            return View();
+        }
+        //Form içerisindeki input nesneleri post edildiğinde bu nesnelere karşılık gelen propertyleri barındıran bir nesneyle otomatik olarak bind edilirler.
+
+        /**********************/
+        //Get actiobn'ın içinde nesne gönderilmezse post actionı gelecek verileri yeni nesne oluşturup onun içine atar.
+        //Ama biz get action'ında nesne gönderirsek user post ettiğinde gelecek olan veriler o nesnenin içine aktarılacaktır.
+        //Boş nesne gönderiyoruz nesne dolu olsaydı input doldurduklarımızla gözükürdü
+
+        //userdan veri almak için user'ın sana bir veriyi post etmesi gerekiyor. Bizim karşılayacak fonk.umuz da post
+
+        //IFormCollection ile veri alma yöntemi oldukça basit
+
+        //[HttpPost]
+        //public IActionResult CreateProduct(IFormCollection datas)
+        //{
+        //    var value1 = datas["txtValue1"].ToString();
+        //    var value2 = datas["txtValue2"];
+        //    return View();
+        //}
+
+        //QueryString: gÜVENLİK GEREKTİRMEYEN BİLGİLERİN URL ÜZERİNDE TAŞINMASI İÇİN KULLANILAN YAPILANMADIR. Url üzerinde taşınan veri. Normalde yazılım bu bilgiyi taşır ve işlemlerinde kullanır
+        //yapılan request'in türü her ne olursa olsun QueryString değerleri taşınabilir.
+
+        //VALİDATİON
+
+        //Bir değerin içinde bulunduğu şartlara uygun olması durumudur. Belirlenen koşullara ve amaca uygun olup olmama durumunun kontrol edilmesidir.
+        //Paralel bir şekilde client ve server tarafında uygulanmalıdır.
+        public IActionResult CreateTwoProduct()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateTwoProduct(Product model)
+
+        {
+            //ModelState : MVC'de bir type'ın data annotationslarının durumunu kontrol eden ve geriye sonuç döndüren bir property
+
+            if(!ModelState.IsValid)
+            {
+                //Loglama - Kullanıcı bilgilendirme
+                //ViewBag.HataMesaj = ModelState.Values.FirstOrDefault(x => x.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                //    .Errors[0].ErrorMessage;
+                //return null;
+
+                //Diğer Yol -- Spanlarla property'lere Bind ettiğimiz validation mesajlarını yakalayacağız.
+                //yapmam gereken gelen modelı tekrar view'e göndermek. kullanıcı yapmış old hatayı görsün
+                //ModelState errors'u dolu olarak gideceğinden dolayı bu errorlardan key'leri asp-validation-for'lara karşılık gelecek keylerin mesajlarını gidecek ilgili spana yerleştirecektir.
+                //Errorlardan gelen keylerle property'de asp-validation-for keylerini eşliyor bind sayesinde
+                var messages = ModelState.ToList();
+
+                return View(model);
+            }
+            //İşlem/Operasyon/Algoritmaya tabi tutulur.
+            return View();
+        }
+
     }
+
+
+
+
 }

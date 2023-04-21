@@ -69,27 +69,30 @@ namespace WebApplication1.Contoller
         //    //return View();
         //}
 
+        //******************************TUPLE***************
+        //public IActionResult Index()
+        //{
 
-        public IActionResult Index()
-        {
+        //    Product urun = new Product
+        //    {
+        //        Id = 1,
+        //        ProductName = "Apple",
+        //        Quantity = 100,
+        //    };
 
-            Product urun = new Product
-            {
-                Id = 1,
-                ProductName = "Apple",
-                Quantity = 100,
-            };
+        //    City sehir = new City
+        //    {
+        //        Id = 1,
+        //        CityName = "London",
+        //        Population = 50000,
+        //    };
 
-            City sehir = new City
-            {
-                Id = 1,
-                CityName = "London",
-                Population = 50000,
-            };
+        //    var cityProduct = (urun, sehir);        //parantezi açıp ilgili değerleri veriyorum->referanslar || tuple nesnesi olarak algılandı
 
-            var cityProduct = (urun, sehir);        //parantezi açıp ilgili değerleri veriyorum->referanslar || tuple nesnesi olarak algılandı
+        //    return View(cityProduct);               //artık view tarafından karşılanması gerekecektir.
+        //}
+        //******************
 
-            return View(cityProduct);               //artık view tarafından karşılanması gerekecektir.
-        }
+       
     }
 }
